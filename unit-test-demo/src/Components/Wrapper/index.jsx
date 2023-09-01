@@ -3,16 +3,18 @@ import PropTypes from 'prop-types'
 
 
 
-const Wrapper = ({ children }) => {
-  
+const Wrapper = ({ children, style }) => {
+
   return (
-    <section className='flex' style={{ background: 'black' }}>
+    <section className='flex' style={{ background: 'black', ...style }}>
       {children}
     </section>
   )
 }
 
 Wrapper.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
+  style:PropTypes.object
 }
 export default Wrapper
+

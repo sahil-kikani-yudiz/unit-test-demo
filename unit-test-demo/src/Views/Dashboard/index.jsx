@@ -1,14 +1,26 @@
 /* eslint-disable no-unused-vars */
-import { Box, Checkbox, FormControlLabel, Grid, TextField, Typography } from '@mui/material'
+// / eslint-disable no-unused-vars /
+import { Autocomplete, Box, Button, Checkbox, FormControlLabel, Grid, TablePagination, TextField, Typography } from '@mui/material'
 import Wrapper from 'Components/Wrapper'
-import React from 'react'
+import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import Paper from '@mui/material/Paper'
+import TableFooter from '@mui/material/TableFooter'
 
 function Dashboard() {
+  const [searchValue, setSearchValue] = useState('')
+
   const {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors }
   } = useForm({
     defaultValues: {
@@ -16,16 +28,31 @@ function Dashboard() {
     }
   })
 
-  function onSubmit(data) {
-    console.log(data, 'data')
+  const [rowsPerPage, setRowsPerPage] = React.useState(5)
+  const [page, setPage] = React.useState(0)
+  const [empData, setEmpData] = useState([])
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage)
   }
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10))
+    setPage(0)
+  }
+
+  function onSubmit(data) {
+    empData.push(data)
+    setEmpData([...empData])
+    reset();
+  }
+
   return (
     <>
       <Wrapper>
         <div style={{ display: 'flex', justifyContent: 'center', height: '100%', width: '100%' }}>
           <Box
             component='form'
-            onSubmit={handleSubmit(onSubmit)}
             sx={{
               my: 8,
               mx: 4,
@@ -47,9 +74,9 @@ function Dashboard() {
               EMPLOYEE FORM
             </Typography>
             <Grid container spacing={3}>
-  
               <Grid item xs={12} sm={6}>
                 <Controller
+                  name='firstName'
                   control={control}
                   rules={{
                     required: true
@@ -60,18 +87,18 @@ function Dashboard() {
                       label='First name'
                       fullWidth
                       onBlur={onBlur}
-                      onChangeText={onChange}
+                      onChange={onChange}
                       value={value}
                       autoComplete='given-name'
                       variant='standard'
                     />
                   )}
-                  name='firstName'
                 />
               </Grid>
 
               <Grid item xs={12} sm={6}>
                 <Controller
+                  name='lastName'
                   control={control}
                   rules={{
                     required: true
@@ -79,7 +106,7 @@ function Dashboard() {
                   render={({ field: { onChange, onBlur, value } }) => (
                     <TextField
                       onBlur={onBlur}
-                      onChangeText={onChange}
+                      onChange={onChange}
                       value={value}
                       id='lastName'
                       label='Last name'
@@ -88,106 +115,221 @@ function Dashboard() {
                       variant='standard'
                     />
                   )}
-                  name='lastName'
                 />
-              </Grid>
-  
-              <Grid item xs={12}>
-              <Controller
-                control={control}
-                rules={{
-                  required: true
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextField
-                    fullWidth
-                    id='email'
-                    label='Email Address'
-                    autoFocus
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    variant='standard'
-                    {...register('email', { pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/ }, { maxLength: 20 })}
-                  />
-                )}
-                name='email'
-              />
               </Grid>
 
               <Grid item xs={12}>
-              <Controller
-                control={control}
-                rules={{
-                  required: true
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextField
-                    fullWidth
-                    type='number'
-                    id='empId'
-                    label='Employee ID'
-                    autoFocus
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    variant='standard'
-                    {...register('empId', { maxLength: 4 })}
-                  />
-                )}
-                name='empId'
-              />
+                <Controller
+                  name='email'
+                  control={control}
+                  rules={{
+                    required: true
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextField
+                      fullWidth
+                      id='email'
+                      label='Email Address'
+                      autoFocus
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                      variant='standard'
+                      {...register('email', { pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/ }, { maxLength: 20 })}
+                    />
+                  )}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <Controller
+                  name='empId'
+                  control={control}
+                  rules={{
+                    required: true
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextField
+                      fullWidth
+                      type='number'
+                      id='empId'
+                      label='Employee ID'
+                      autoFocus
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                      variant='standard'
+                      {...register('empId', { maxLength: 4 })}
+                    />
+                  )}
+                />
               </Grid>
 
               <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  id='city'
+                <Controller
                   name='city'
-                  label='City'
-                  fullWidth
-                  autoComplete='shipping address-level2'
-                  variant='standard'
+                  control={control}
+                  rules={{
+                    required: true
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextField
+                      required
+                      id='city'
+                      name='city'
+                      label='City'
+                      fullWidth
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                      autoComplete='shipping address-level2'
+                      variant='standard'
+                    />
+                  )}
                 />
               </Grid>
 
               <Grid item xs={12} sm={6}>
-                <TextField id='state' name='state' label='State/Province/Region' fullWidth variant='standard' />
+                <Controller
+                  name='state'
+                  control={control}
+                  rules={{
+                    required: true
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextField
+                      id='state'
+                      name='state'
+                      label='State/Province/Region'
+                      fullWidth
+                      variant='standard'
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                    />
+                  )}
+                />
               </Grid>
 
               <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  id='zip'
+                <Controller
                   name='zip'
-                  label='Zip / Postal code'
-                  fullWidth
-                  autoComplete='shipping postal-code'
-                  variant='standard'
+                  control={control}
+                  rules={{
+                    required: true
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextField
+                      required
+                      id='zip'
+                      name='zip'
+                      label='Zip / Postal code'
+                      fullWidth
+                      autoComplete='shipping postal-code'
+                      variant='standard'
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                    />
+                  )}
                 />
               </Grid>
 
               <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  id='country'
+                <Controller
                   name='country'
-                  label='Country'
-                  fullWidth
-                  autoComplete='shipping country'
-                  variant='standard'
+                  control={control}
+                  rules={{
+                    required: true
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextField
+                      required
+                      id='country'
+                      name='country'
+                      label='Country'
+                      fullWidth
+                      autoComplete='shipping country'
+                      variant='standard'
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                    />
+                  )}
                 />
               </Grid>
 
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox color='secondary' name='saveAddress' value='yes' />}
-                  label='Use this address for payment details'
-                />
-              </Grid>
             </Grid>
+            <Button type='submit' onClick={handleSubmit(onSubmit)}>
+              Submit
+            </Button>
           </Box>
         </div>
+      </Wrapper>
+      <Wrapper style={{ margin: '50px 100px', paddingBottom: '50px' }}>
+      
+        <TextField
+          label='Search...'
+          variant='standard'
+          size='small'
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          fullWidth
+          style={{ backgroundColor: 'white' }}
+          margin='normal'
+        />
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} size='small' aria-label='a dense table'>
+            <TableHead>
+              <TableRow>
+                <TableCell>Emp ID</TableCell>
+                <TableCell>First Name</TableCell>
+                <TableCell>Last Name</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>City</TableCell>
+                <TableCell>State</TableCell>
+                <TableCell>Zip</TableCell>
+                <TableCell>Country</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+            {empData
+              .filter(row => row.firstName.toLowerCase().includes(searchValue.toLowerCase()))
+              .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+              .map((row) => (
+                <TableRow key={row.empId} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell>{row.empId}</TableCell>
+                  <TableCell>{row.firstName}</TableCell>
+                  <TableCell>{row.lastName}</TableCell>
+                  <TableCell>{row.email}</TableCell>
+                  <TableCell>{row.city}</TableCell>
+                  <TableCell>{row.state}</TableCell>
+                  <TableCell>{row.zip}</TableCell>
+                  <TableCell>{row.country}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                  colSpan={3}
+                  count={empData.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  SelectProps={{
+                    inputProps: {
+                      'aria-label': 'rows per page'
+                    },
+                    native: true
+                  }}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </TableContainer>
       </Wrapper>
     </>
   )
