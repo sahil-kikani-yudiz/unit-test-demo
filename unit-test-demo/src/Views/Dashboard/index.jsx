@@ -1,7 +1,4 @@
-/* eslint-disable no-unused-vars */
-// / eslint-disable no-unused-vars /
-import { Autocomplete, Box, Button, Checkbox, FormControlLabel, Grid, TablePagination, TextField, Typography } from '@mui/material'
-import Wrapper from 'Components/Wrapper'
+import { Alert, Box, Button, Grid, TablePagination, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import Table from '@mui/material/Table'
@@ -12,6 +9,8 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import TableFooter from '@mui/material/TableFooter'
+
+import Wrapper from 'Components/Wrapper'
 
 function Dashboard() {
   const [searchValue, setSearchValue] = useState('')
@@ -44,7 +43,7 @@ function Dashboard() {
   function onSubmit(data) {
     empData.push(data)
     setEmpData([...empData])
-    reset();
+    reset()
   }
 
   return (
@@ -94,6 +93,11 @@ function Dashboard() {
                     />
                   )}
                 />
+                {errors.firstName && (
+                  <Alert size='small' fullWidth severity='error'>
+                    This Field is Required
+                  </Alert>
+                )}
               </Grid>
 
               <Grid item xs={12} sm={6}>
@@ -116,6 +120,11 @@ function Dashboard() {
                     />
                   )}
                 />
+                {errors.lastName && (
+                  <Alert size='small' fullWidth severity='error'>
+                    This Field is Required
+                  </Alert>
+                )}
               </Grid>
 
               <Grid item xs={12}>
@@ -139,6 +148,11 @@ function Dashboard() {
                     />
                   )}
                 />
+                {errors.email && (
+                  <Alert size='small' fullWidth severity='error'>
+                    This Field is Required
+                  </Alert>
+                )}
               </Grid>
 
               <Grid item xs={12}>
@@ -159,10 +173,15 @@ function Dashboard() {
                       onChange={onChange}
                       value={value}
                       variant='standard'
-                      {...register('empId', { maxLength: 4 })}
+                      {...register('empId', { maxLength: 10 })}
                     />
                   )}
                 />
+                {errors.empId && (
+                  <Alert size='small' fullWidth severity='error'>
+                    This Field is Required
+                  </Alert>
+                )}
               </Grid>
 
               <Grid item xs={12} sm={6}>
@@ -187,6 +206,11 @@ function Dashboard() {
                     />
                   )}
                 />
+                {errors.city && (
+                  <Alert size='small' fullWidth severity='error'>
+                    This Field is Required
+                  </Alert>
+                )}
               </Grid>
 
               <Grid item xs={12} sm={6}>
@@ -209,6 +233,11 @@ function Dashboard() {
                     />
                   )}
                 />
+                {errors.state && (
+                  <Alert size='small' fullWidth severity='error'>
+                    This Field is Required
+                  </Alert>
+                )}
               </Grid>
 
               <Grid item xs={12} sm={6}>
@@ -233,6 +262,11 @@ function Dashboard() {
                     />
                   )}
                 />
+                {errors.zip && (
+                  <Alert size='small' fullWidth severity='error'>
+                    This Field is Required
+                  </Alert>
+                )}
               </Grid>
 
               <Grid item xs={12} sm={6}>
@@ -257,8 +291,12 @@ function Dashboard() {
                     />
                   )}
                 />
+                {errors.country && (
+                  <Alert size='small' fullWidth severity='error'>
+                    This Field is Required
+                  </Alert>
+                )}
               </Grid>
-
             </Grid>
             <Button type='submit' onClick={handleSubmit(onSubmit)}>
               Submit
@@ -267,7 +305,6 @@ function Dashboard() {
         </div>
       </Wrapper>
       <Wrapper style={{ margin: '50px 100px', paddingBottom: '50px' }}>
-      
         <TextField
           label='Search...'
           variant='standard'
@@ -293,21 +330,21 @@ function Dashboard() {
               </TableRow>
             </TableHead>
             <TableBody>
-            {empData
-              .filter(row => row.firstName.toLowerCase().includes(searchValue.toLowerCase()))
-              .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-              .map((row) => (
-                <TableRow key={row.empId} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                  <TableCell>{row.empId}</TableCell>
-                  <TableCell>{row.firstName}</TableCell>
-                  <TableCell>{row.lastName}</TableCell>
-                  <TableCell>{row.email}</TableCell>
-                  <TableCell>{row.city}</TableCell>
-                  <TableCell>{row.state}</TableCell>
-                  <TableCell>{row.zip}</TableCell>
-                  <TableCell>{row.country}</TableCell>
-                </TableRow>
-              ))}
+              {empData
+                .filter((row) => row.firstName.toLowerCase().includes(searchValue.toLowerCase()))
+                .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+                .map((row) => (
+                  <TableRow key={row.empId} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    <TableCell>{row.empId}</TableCell>
+                    <TableCell>{row.firstName}</TableCell>
+                    <TableCell>{row.lastName}</TableCell>
+                    <TableCell>{row.email}</TableCell>
+                    <TableCell>{row.city}</TableCell>
+                    <TableCell>{row.state}</TableCell>
+                    <TableCell>{row.zip}</TableCell>
+                    <TableCell>{row.country}</TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
             <TableFooter>
               <TableRow>
