@@ -14,7 +14,6 @@ const Wrapper = ({ children, style }) => {
 
 Wrapper.propTypes = {
   children: PropTypes.node,
-  style:PropTypes.object
+  style: PropTypes.object
 }
 export default Wrapper
-
