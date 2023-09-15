@@ -39,13 +39,16 @@ function Dashboard() {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
   }
+  function handleClear() {
+    reset()
+  }
 
   function onSubmit(data) {
     empData.push(data)
     setEmpData([...empData])
-    reset()
+    // handleClear()
   }
-
+  console.log({ empData })
   return (
     <>
       <Wrapper>
@@ -192,8 +195,7 @@ function Dashboard() {
                     required: true
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <TextField
-                      required
+                    <TextField                      
                       id='city'
                       name='city'
                       label='City'
@@ -248,8 +250,7 @@ function Dashboard() {
                     required: true
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <TextField
-                      required
+                    <TextField                      
                       id='zip'
                       name='zip'
                       label='Zip / Postal code'
@@ -277,8 +278,7 @@ function Dashboard() {
                     required: true
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <TextField
-                      required
+                    <TextField                      
                       id='country'
                       name='country'
                       label='Country'
@@ -300,6 +300,9 @@ function Dashboard() {
             </Grid>
             <Button type='submit' onClick={handleSubmit(onSubmit)}>
               Submit
+            </Button>
+            <Button onClick={handleClear}>
+              clear
             </Button>
           </Box>
         </div>
