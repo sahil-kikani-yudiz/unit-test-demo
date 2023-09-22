@@ -25,5 +25,16 @@ test('submit the form', () => {
 
     fireEvent.click(getByText('Submit'));
 
+    await (() => {
+      expect(getByText('Isha')).toBeInTheDocument();
+      expect(getByText('vaghamshi')).toBeInTheDocument();
+      expect(getByText('isha@gmail.com')).toBeInTheDocument();
+      expect(getByText('6456')).toBeInTheDocument();
+      expect(getByText('rajkot')).toBeInTheDocument();
+      expect(getByText('Gujarat')).toBeInTheDocument();
+      expect(getByText('2456987')).toBeInTheDocument();
+      expect(getByText('India')).toBeInTheDocument();
+    });
 
-});
+  })
+
