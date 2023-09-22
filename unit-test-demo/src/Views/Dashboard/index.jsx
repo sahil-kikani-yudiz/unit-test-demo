@@ -29,7 +29,16 @@ function Dashboard() {
 
   const [rowsPerPage, setRowsPerPage] = React.useState(5)
   const [page, setPage] = React.useState(0)
-  const [empData, setEmpData] = useState([])
+  const [empData, setEmpData] = useState([{
+    empId: 1,
+    firstName: 'Isha',
+    lastName: 'vaghmahsi',
+    email: 'isha@gmail.com',
+    city: 'rajkot',
+    state: 'gujrat',
+    zip: 32222,
+    country: 'india'
+  }])
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -44,9 +53,12 @@ function Dashboard() {
   }
 
   function onSubmit(data) {
-    empData.push(data)
-    setEmpData([...empData])
+    // empData.push(data)
+    // setEmpData([...empData])
     // handleClear()
+    const submitData = { ...data, id: empData?.length + 1 }
+    setEmpData((prev) => [...prev, submitData])
+    handleClear()
   }
   console.log({ empData })
   return (
@@ -195,7 +207,7 @@ function Dashboard() {
                     required: true
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <TextField                      
+                    <TextField
                       id='city'
                       name='city'
                       label='City'
@@ -250,7 +262,7 @@ function Dashboard() {
                     required: true
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <TextField                      
+                    <TextField
                       id='zip'
                       name='zip'
                       label='Zip / Postal code'
@@ -278,7 +290,7 @@ function Dashboard() {
                     required: true
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <TextField                      
+                    <TextField
                       id='country'
                       name='country'
                       label='Country'
@@ -310,6 +322,7 @@ function Dashboard() {
       <Wrapper style={{ margin: '50px 100px', paddingBottom: '50px' }}>
         <TextField
           label='Search...'
+          placeholder='Search...'
           variant='standard'
           size='small'
           value={searchValue}
