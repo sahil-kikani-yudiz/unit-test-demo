@@ -53,12 +53,9 @@ function Dashboard() {
   }
 
   function onSubmit(data) {
-    // empData.push(data)
-    // setEmpData([...empData])
+    empData.push(data)
+    setEmpData([...empData])
     // handleClear()
-    const submitData = { ...data, id: empData?.length + 1 }
-    setEmpData((prev) => [...prev, submitData])
-    handleClear()
   }
   console.log({ empData })
   return (
@@ -207,7 +204,7 @@ function Dashboard() {
                     required: true
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <TextField
+                    <TextField                      
                       id='city'
                       name='city'
                       label='City'
@@ -262,7 +259,7 @@ function Dashboard() {
                     required: true
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <TextField
+                    <TextField                      
                       id='zip'
                       name='zip'
                       label='Zip / Postal code'
@@ -290,7 +287,7 @@ function Dashboard() {
                     required: true
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <TextField
+                    <TextField                      
                       id='country'
                       name='country'
                       label='Country'
